@@ -3,57 +3,72 @@
 #include <string.h>
 #include <stdlib.h>
 
-fraction fract_mult(fraction a, fraction b) {
-    fraction c = {a.num * b.num, a.den * b.den};
-    for(unsigned int i = (c.num > c.den) ? c.den : c.num; i > 1; i--) {
-        if (c.num % i == 0 && c.den % i == 0) {
-            c.num = c.num / i;
-            c.den = c.den / i;
+fraction fract_simplify(fraction a) {
+    for(unsigned int i = (a.num > a.den) ? a.den : a.num; i > 1; i--) {
+        if (a.num % i == 0 && a.den % i == 0) {
+            a.num = a.num / i;
+            a.den = a.den / i;
             break;
         }
     }
-    return c;
+    return a;
 }
 
 fraction fract_mult_2ui(fraction a, unsigned int num, unsigned int den) {
     fraction c = {a.num * num, a.den * den};
-    for(unsigned int i = (c.num > c.den) ? c.den : c.num; i > 1; i--) {
-        if (c.num % i == 0 && c.den % i == 0) {
-            c.num = c.num / i;
-            c.den = c.den / i;
+    return fract_simplify(c);
+}
+
+fraction fract_add(fraction a, fraction b) {
+    fraction c = {a.num * b.den + b.num * a.den, a.den * b.den};
+    return fract_simplify(c);
+}
+
+unsigned int I_strcmp(char *str1, char *str2) {
+    unsigned int i = 0;
+    while(str1[i] != '\0' && str2[i] != '\0') {
+        if(str1[i] != str2[i]) {
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
+base_material_dict base_material_dict_gen() {
+    base_material_dict dict = {
+        {"iron plate", "copper plate", "steel", "plastic", "sulfer"},
+        {{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}},
+    };
+    return dict;
+}
+
+void base_material_dict_increment(base_material_dict *dict, char *key, fraction quantity) {
+    for(unsigned int i = 0; i < BASE_MATERIAL_DICT_SIZE; i++) {
+        if(I_strcmp(dict->materials[i], key)) {
+            dict->quantities[i] = fract_add(dict->quantities[i], quantity);
             break;
         }
     }
-    return c;
 }
 
-fraction fract_mult_4ui(unsigned int num1, unsigned int den1, unsigned int num2, unsigned int den2) {
-    fraction c = {num1 * num2, den1 * den2};
-    for(unsigned int i = (c.num > c.den) ? c.den : c.num; i > 1; i--) {
-        if (c.num % i == 0 && c.den % i == 0) {
-            c.num = c.num / i;
-            c.den = c.den / i;
-            break;
-        }
-    }
-    return c;
-}
-
-void recipe_gear_print(fraction quantity, char *buffer) {
+void recipe_gear_print(fraction quantity, char *buffer, base_material_dict *dict) {
     quantity = fract_mult_2ui(quantity, 1, 2);
     printf("%u/%u gear assemblers\n", quantity.num, quantity.den);
     quantity = fract_mult_2ui(quantity, 4, 1);
     printf(buffer); printf("|- %u/%u iron plates\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "iron plate", quantity);
 }
 
-void recipe_pipe_print(fraction quantity, char *buffer) {
+void recipe_pipe_print(fraction quantity, char *buffer, base_material_dict *dict) {
     quantity = fract_mult_2ui(quantity, 1, 2);
     printf("%u/%u pipe assemblers\n", quantity.num, quantity.den);
     quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|- %u/%u iron plates\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "iron plate", quantity);
 }
 
-void recipe_engine_unit_print(fraction quantity, char *buffer) {
+void recipe_engine_unit_print(fraction quantity, char *buffer, base_material_dict *dict) {
     char *next_buffer = (char *) malloc(strlen(buffer) + 3);
     strcpy(next_buffer, buffer);
     strcat(next_buffer, "|  ");
@@ -61,22 +76,24 @@ void recipe_engine_unit_print(fraction quantity, char *buffer) {
     fraction item_quantity = fract_mult_2ui(quantity, 10, 1);
     printf("%u/%u engine unit assemblers\n", item_quantity.num, item_quantity.den);
     printf(buffer); printf("|- %u/%u steel plates\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "steel", quantity);
     printf(buffer); printf("|\n");
     item_quantity = fract_mult_2ui(quantity, 2, 1);
-    printf(buffer); printf("|- "); recipe_pipe_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_pipe_print(item_quantity, next_buffer, dict);
     printf(buffer); printf("|\n");
-    printf(buffer); printf("|- "); recipe_gear_print(quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_gear_print(quantity, next_buffer, dict);
     free(next_buffer);
 }
 
-void recipe_copper_wire_print(fraction quantity, char *buffer) {
+void recipe_copper_wire_print(fraction quantity, char *buffer, base_material_dict *dict) {
     quantity = fract_mult_2ui(quantity, 1, 4);
     printf("%u/%u copper wire assemblers\n", quantity.num, quantity.den);
     quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|- %u/%u copper plates\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "copper plate", quantity);
 }
 
-void recipe_electronic_circuit_print(fraction quantity, char *buffer) {
+void recipe_electronic_circuit_print(fraction quantity, char *buffer, base_material_dict *dict) {
     quantity = fract_mult_2ui(quantity, 1, 2);
     char *next_buffer = (char *) malloc(strlen(buffer) + 3);
     strcpy(next_buffer, buffer);
@@ -85,12 +102,13 @@ void recipe_electronic_circuit_print(fraction quantity, char *buffer) {
     printf("%u/%u electronic circuit assemblers\n", quantity.num, quantity.den);
     fraction item_quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|- %u/%u iron plates\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "iron plate", item_quantity);
     item_quantity = fract_mult_2ui(quantity, 6, 1);
     printf(buffer); printf("|\n");
-    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, next_buffer, dict);
 }
 
-void recipe_advanced_circuit_print(fraction quantity, char *buffer) {
+void recipe_advanced_circuit_print(fraction quantity, char *buffer, base_material_dict *dict) {
     char *next_buffer = (char *) malloc(strlen(buffer) + 3);
     strcpy(next_buffer, buffer);
     strcat(next_buffer, "|  ");
@@ -99,15 +117,16 @@ void recipe_advanced_circuit_print(fraction quantity, char *buffer) {
     printf("%u/%u advanced circuit assemblers\n", item_quantity.num, item_quantity.den);
     item_quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|- %u/%u plastic\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "plastic", item_quantity);
     printf(buffer); printf("|\n");
     item_quantity = fract_mult_2ui(quantity, 4, 1);
-    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, next_buffer, dict);
     item_quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|\n");
-    printf(buffer); printf("|- "); recipe_electronic_circuit_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_electronic_circuit_print(item_quantity, next_buffer, dict);
 }
 
-void recipe_chemical_science_print(fraction quantity, char *buffer) {
+void recipe_chemical_science_print(fraction quantity, char *buffer, base_material_dict *dict) {
     quantity = fract_mult_2ui(quantity, 1, 2);
     char *next_buffer = (char *) malloc(strlen(buffer) + 3);
     strcpy(next_buffer, buffer);
@@ -116,10 +135,11 @@ void recipe_chemical_science_print(fraction quantity, char *buffer) {
     fraction item_quantity = fract_mult_2ui(quantity, 24, 1);
     printf(buffer); printf("%u/%u chemical science assemblers\n", item_quantity.num, item_quantity.den);
     printf(buffer); printf("|- %u/%u sulfer\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "sulfer", quantity);
     item_quantity = fract_mult_2ui(quantity, 2, 1);
     printf(buffer); printf("|\n");
-    printf(buffer); printf("|- "); recipe_engine_unit_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_engine_unit_print(item_quantity, next_buffer, dict);
     item_quantity = fract_mult_2ui(quantity, 3, 1);
     printf(buffer); printf("|\n");
-    printf(buffer); printf("|- "); recipe_advanced_circuit_print(item_quantity, next_buffer);
+    printf(buffer); printf("|- "); recipe_advanced_circuit_print(item_quantity, next_buffer, dict);
 }

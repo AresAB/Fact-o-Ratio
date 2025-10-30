@@ -29,22 +29,37 @@ void main() {
     printf("----------------------------------------\n");
 
     fraction quantity = {num, den};
+    base_material_dict output = base_material_dict_gen();
     lowercase(item);
     if(str_trim_cmp(item, "chemical science") || str_trim_cmp(item, "blue science")) {
-        recipe_chemical_science_print(quantity, "");
+        recipe_chemical_science_print(quantity, "", &output);
     }
     else if(str_trim_cmp(item, "engine")) {
-        recipe_engine_unit_print(quantity, "");
+        recipe_engine_unit_print(quantity, "", &output);
     }
     else if(str_trim_cmp(item, "advanced circuit") || str_trim_cmp(item, "red circuit")) {
-        recipe_advanced_circuit_print(quantity, "");
+        recipe_advanced_circuit_print(quantity, "", &output);
     }
     else if(str_trim_cmp(item, "electronic circuit") || str_trim_cmp(item, "green circuit")) {
-        recipe_electronic_circuit_print(quantity, "");
+        recipe_electronic_circuit_print(quantity, "", &output);
+    }
+    else if(str_trim_cmp(item, "gear")) {
+        recipe_gear_print(quantity, "", &output);
+    }
+
+    printf("\n------------------------------\n");
+    printf("| Total Base Cost Per Second |\n");
+    printf("------------------------------\n\n");
+
+    for(int i = 0; i < BASE_MATERIAL_DICT_SIZE; i++) {
+        unsigned int num = output.quantities[i].num;
+        if(num > 0) {
+            unsigned int den = output.quantities[i].den;
+            printf("%u %u/%u %s\n", num/den , num % den, den, output.materials[i]);
+        }
     }
 }
 
-// - figure out how to keep track of base quantities?
 // - put in every recipe
 // - figure out permanent compiler
 
