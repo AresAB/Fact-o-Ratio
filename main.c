@@ -1,6 +1,7 @@
 #include <fratio_recipies.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 void lowercase(char *str);
 unsigned int str_trim_cmp(char *long_str, char *short_str);
@@ -24,27 +25,33 @@ void main() {
     printf("|> ");
     unsigned int den;
     scanf("%u", &den);
+    printf("|- What is your highest level of assembly?\n");
+    printf("|  -- (1 for lvl 1, 2 for lvl 2, etc.) --\n");
+    printf("|> ");
+    unsigned int lvl;
+    scanf("%u", &lvl);
+
     printf("----------------------------------------\n");
     printf("|               RESULTS                |\n");
-    printf("----------------------------------------\n");
+    printf("----------------------------------------\n\n");
 
     fraction quantity = {num, den};
     base_material_dict output = base_material_dict_gen();
     lowercase(item);
     if(str_trim_cmp(item, "chemical science") || str_trim_cmp(item, "blue science")) {
-        recipe_chemical_science_print(quantity, "", &output);
+        recipe_chemical_science_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "engine")) {
-        recipe_engine_unit_print(quantity, "", &output);
+        recipe_engine_unit_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "advanced circuit") || str_trim_cmp(item, "red circuit")) {
-        recipe_advanced_circuit_print(quantity, "", &output);
+        recipe_advanced_circuit_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "electronic circuit") || str_trim_cmp(item, "green circuit")) {
-        recipe_electronic_circuit_print(quantity, "", &output);
+        recipe_electronic_circuit_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "gear")) {
-        recipe_gear_print(quantity, "", &output);
+        recipe_gear_print(quantity, lvl, "", &output);
     }
 
     printf("\n------------------------------\n");
