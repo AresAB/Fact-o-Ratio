@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 fraction fract_simplify(fraction a) {
     for(unsigned int i = (a.num > a.den) ? a.den : a.num; i > 1; i--) {
@@ -26,6 +27,16 @@ fraction fract_mult_4ui(unsigned int num1, unsigned int den1, unsigned int num2,
 
 fraction fract_add(fraction a, fraction b) {
     fraction c = {a.num * b.den + b.num * a.den, a.den * b.den};
+    return fract_simplify(c);
+}
+
+fraction fract_add_2ui(fraction a, unsigned int num, unsigned int den) {
+    fraction c = {a.num * den + num * a.den, a.den * den};
+    return fract_simplify(c);
+}
+
+fraction fract_subtract_2ui(fraction a, unsigned int num, unsigned int den) {
+    fraction c = {a.num * den - num * a.den, a.den * den};
     return fract_simplify(c);
 }
 
@@ -59,22 +70,66 @@ void base_material_dict_increment(base_material_dict *dict, char *key, fraction 
 
 void recipe_assembly_print(fraction q, unsigned int a_lvl, char *buffer, char *item) {
     if(a_lvl == 3) {
-        q = fract_mult_2ui(q, 2, 5);
-        if(q.num / q.den != 0) printf("%u %s III assemblers\n", q.num / q.den, item);
+        fraction q3 = fract_mult_2ui(q, 2, 5);
+        fraction q2 = fract_mult_2ui(q, 2, 3);
+        fraction a_fract;
+        unsigned int a;
+        unsigned int a_max = q.num;
+        unsigned int b_max = 0;
+        unsigned int c_max = 0;
+        for(unsigned int i = 0; i <= (float)q3.num / q3.den; i++) {
+            if(i != 0) q2 = fract_subtract_2ui(q2, 5, 3);
+            a_fract = fract_subtract_2ui(q, 5 * i, 2);
+            for(unsigned int j = 0; j <= (float)q2.num / q2.den; j++) {
+                if(j != 0) a_fract = fract_subtract_2ui(a_fract, 3, 2);
+                a = ceil((float)a_fract.num / a_fract.den);
+                if(a + j + i < a_max + b_max + c_max) {
+                    a_max = a;
+                    b_max = j;
+                    c_max = i;
+                }
+            }
+        }
+        if(c_max != 0) {
+            printf("%u %s III assemblers\n", c_max, item);
+            printf(buffer);
+        }
+        if(b_max != 0) {
+            printf("%u %s II assemblers\n", b_max, item);
+            printf(buffer);
+        }
+        if(a_max != 0) {
+            printf("%u %s I assemblers\n", a_max, item);
+        }
+
+        /*if(q.num / q.den != 0) printf("%u %s III assemblers\n", q.num / q.den, item);
         q = fract_mult_4ui(q.num % q.den, q.den, 5, 3);
         if(q.num / q.den != 0) {
             printf(buffer); printf("%u %s II assemblers\n", q.num / q.den, item);
         }
         if(q.num % q.den != 0) {
             printf(buffer); printf("%u/%u %s I assemblers\n", q.num % q.den, q.den, item);
-        }
+        }*/
     }
     else if(a_lvl == 2) {
-        q = fract_mult_2ui(q, 2, 3);
-        if(q.num / q.den != 0) printf("%u %s II assemblers\n", q.num / q.den, item);
-        if(q.num % q.den != 0) {
-            printf(buffer); printf("%u/%u %s I assemblers\n", q.num % q.den, q.den, item);
+        fraction q2 = fract_mult_2ui(q, 2, 3);
+        fraction a_fract;
+        unsigned int a;
+        unsigned int a_max = ceil((float)q.num / q.den);
+        unsigned int b_max = 0;
+        for (unsigned int i = 1; i <= (float)q2.num / q2.den; i++) {
+            a_fract = fract_subtract_2ui(q, 3 * i, 2);
+            a = ceil((float)a_fract.num / a_fract.den);
+            if(a + i < a_max + b_max) {
+                a_max = a;
+                b_max = i;
+            }
         }
+        if(b_max != 0) {
+            printf("%u %s II assemblers\n", b_max, item);
+            printf(buffer);
+        }
+        if(a_max != 0) printf("%u %s I assemblers\n", a_max, item);
     }
     else {
         printf("%u/%u %s I assemblers\n", q.num, q.den, item);
