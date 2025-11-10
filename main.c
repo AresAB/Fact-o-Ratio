@@ -67,9 +67,6 @@ void main() {
     }
 }
 
-// - put in every recipe
-// - figure out permanent compiler
-
 void lowercase(char *str) {
     unsigned int i = 0;
     while(str[i] != '\0') {

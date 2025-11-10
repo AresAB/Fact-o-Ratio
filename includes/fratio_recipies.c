@@ -17,27 +17,27 @@ fraction fract_simplify(fraction a) {
 
 fraction fract_mult_2ui(fraction a, unsigned int num, unsigned int den) {
     fraction c = {a.num * num, a.den * den};
-    return fract_simplify(c);
+    return c;
 }
 
 fraction fract_mult_4ui(unsigned int num1, unsigned int den1, unsigned int num2, unsigned int den2) {
     fraction c = {num1 * num2, den1 * den2};
-    return fract_simplify(c);
+    return c;
 }
 
 fraction fract_add(fraction a, fraction b) {
     fraction c = {a.num * b.den + b.num * a.den, a.den * b.den};
-    return fract_simplify(c);
+    return c;
 }
 
 fraction fract_add_2ui(fraction a, unsigned int num, unsigned int den) {
     fraction c = {a.num * den + num * a.den, a.den * den};
-    return fract_simplify(c);
+    return c;
 }
 
 fraction fract_subtract_2ui(fraction a, unsigned int num, unsigned int den) {
     fraction c = {a.num * den - num * a.den, a.den * den};
-    return fract_simplify(c);
+    return c;
 }
 
 unsigned int I_strcmp(char *str1, char *str2) {
@@ -62,7 +62,7 @@ base_material_dict base_material_dict_gen() {
 void base_material_dict_increment(base_material_dict *dict, char *key, fraction quantity) {
     for(unsigned int i = 0; i < BASE_MATERIAL_DICT_SIZE; i++) {
         if(I_strcmp(dict->materials[i], key)) {
-            dict->quantities[i] = fract_add(dict->quantities[i], quantity);
+            dict->quantities[i] = fract_simplify(fract_add(dict->quantities[i], quantity));
             break;
         }
     }
@@ -101,15 +101,6 @@ void recipe_assembly_print(fraction q, unsigned int a_lvl, char *buffer, char *i
         if(a_max != 0) {
             printf("%u %s I assemblers\n", a_max, item);
         }
-
-        /*if(q.num / q.den != 0) printf("%u %s III assemblers\n", q.num / q.den, item);
-        q = fract_mult_4ui(q.num % q.den, q.den, 5, 3);
-        if(q.num / q.den != 0) {
-            printf(buffer); printf("%u %s II assemblers\n", q.num / q.den, item);
-        }
-        if(q.num % q.den != 0) {
-            printf(buffer); printf("%u/%u %s I assemblers\n", q.num % q.den, q.den, item);
-        }*/
     }
     else if(a_lvl == 2) {
         fraction q2 = fract_mult_2ui(q, 2, 3);
@@ -140,7 +131,7 @@ void recipe_gear_print(fraction quantity, unsigned int assembler_level, char *bu
     quantity = fract_mult_2ui(quantity, 1, 2);
     recipe_assembly_print(quantity, assembler_level, buffer, "gear");
 
-    quantity = fract_mult_2ui(quantity, 4, 1);
+    quantity = fract_simplify(fract_mult_2ui(quantity, 4, 1));
     printf(buffer); printf("|- %u/%u iron plates\n", quantity.num, quantity.den);
     base_material_dict_increment(dict, "iron plate", quantity);
 }
@@ -149,7 +140,7 @@ void recipe_pipe_print(fraction quantity, unsigned int assembler_level, char *bu
     quantity = fract_mult_2ui(quantity, 1, 2);
     recipe_assembly_print(quantity, assembler_level, buffer, "pipe");
 
-    quantity = fract_mult_2ui(quantity, 2, 1);
+    quantity = fract_simplify(fract_mult_2ui(quantity, 2, 1));
     printf(buffer); printf("|- %u/%u iron plates\n", quantity.num, quantity.den);
     base_material_dict_increment(dict, "iron plate", quantity);
 }
@@ -162,6 +153,7 @@ void recipe_engine_unit_print(fraction quantity, unsigned int assembler_level, c
     fraction item_quantity = fract_mult_2ui(quantity, 10, 1);
     recipe_assembly_print(item_quantity, assembler_level, buffer, "engine unit");
 
+    quantity = fract_simplify(quantity);
     printf(buffer); printf("|- %u/%u steel plates\n", quantity.num, quantity.den);
     base_material_dict_increment(dict, "steel", quantity);
     printf(buffer); printf("|\n");
@@ -176,7 +168,7 @@ void recipe_copper_wire_print(fraction quantity, unsigned int assembler_level, c
     quantity = fract_mult_2ui(quantity, 1, 4);
     recipe_assembly_print(quantity, assembler_level, buffer, "copper wire");
 
-    quantity = fract_mult_2ui(quantity, 2, 1);
+    quantity = fract_simplify(fract_mult_2ui(quantity, 2, 1));
     printf(buffer); printf("|- %u/%u copper plates\n", quantity.num, quantity.den);
     base_material_dict_increment(dict, "copper plate", quantity);
 }
@@ -189,7 +181,7 @@ void recipe_electronic_circuit_print(fraction quantity, unsigned int assembler_l
 
     recipe_assembly_print(quantity, assembler_level, buffer, "electronic circuit");
 
-    fraction item_quantity = fract_mult_2ui(quantity, 2, 1);
+    fraction item_quantity = fract_simplify(fract_mult_2ui(quantity, 2, 1));
     printf(buffer); printf("|- %u/%u iron plates\n", item_quantity.num, item_quantity.den);
     base_material_dict_increment(dict, "iron plate", item_quantity);
     item_quantity = fract_mult_2ui(quantity, 6, 1);
@@ -205,7 +197,7 @@ void recipe_advanced_circuit_print(fraction quantity, unsigned int assembler_lev
     fraction item_quantity = fract_mult_2ui(quantity, 6, 1);
     recipe_assembly_print(item_quantity, assembler_level, buffer, "advanced circuit");
 
-    item_quantity = fract_mult_2ui(quantity, 2, 1);
+    item_quantity = fract_simplify(fract_mult_2ui(quantity, 2, 1));
     printf(buffer); printf("|- %u/%u plastic\n", item_quantity.num, item_quantity.den);
     base_material_dict_increment(dict, "plastic", item_quantity);
     printf(buffer); printf("|\n");
@@ -225,6 +217,7 @@ void recipe_chemical_science_print(fraction quantity, unsigned int assembler_lev
     fraction item_quantity = fract_mult_2ui(quantity, 24, 1);
     recipe_assembly_print(item_quantity, assembler_level, buffer, "chemical science");
 
+    quantity = fract_simplify(quantity);
     printf(buffer); printf("|- %u/%u sulfer\n", quantity.num, quantity.den);
     base_material_dict_increment(dict, "sulfer", quantity);
     item_quantity = fract_mult_2ui(quantity, 2, 1);
