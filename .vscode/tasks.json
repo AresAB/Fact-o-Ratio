@@ -9,7 +9,6 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "${workspaceFolder}/includes/fratio_recipies.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

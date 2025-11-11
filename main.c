@@ -1,4 +1,5 @@
 #include <fratio_recipies.h>
+#include <fratio_recipies.c>
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
