@@ -21,3 +21,7 @@ void recipe_advanced_circuit_print(fraction quantity, unsigned int assembler_lev
 void recipe_electronic_circuit_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_copper_wire_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_chemical_science_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_battery_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_electrical_engine_unit_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_flying_robot_frame_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_construction_robot_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);

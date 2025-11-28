@@ -39,7 +39,19 @@ void main() {
     fraction quantity = {num, den};
     base_material_dict output = base_material_dict_gen();
     lowercase(item);
-    if(str_trim_cmp(item, "chemical science") || str_trim_cmp(item, "blue science")) {
+    if(str_trim_cmp(item, "construction robot") || str_trim_cmp(item, "construction bot")) {
+        recipe_construction_robot_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "flying robot frame") || str_trim_cmp(item, "robot frame")) {
+        recipe_flying_robot_frame_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "electrical engine unit")) {
+        recipe_electrical_engine_unit_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "batter")) {
+        recipe_battery_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "chemical science") || str_trim_cmp(item, "blue science")) {
         recipe_chemical_science_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "engine")) {
