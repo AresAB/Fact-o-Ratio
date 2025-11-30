@@ -42,14 +42,15 @@ void main() {
     if(str_trim_cmp(item, "construction robot") || str_trim_cmp(item, "construction bot")) {
         recipe_construction_robot_print(quantity, lvl, "", &output);
     }
+    if(str_trim_cmp(item, "logistic robot") || str_trim_cmp(item, "logistic bot") ||
+       str_trim_cmp(item, "logistics robot") || str_trim_cmp(item, "logistics bot")) {
+        recipe_logistic_robot_print(quantity, lvl, "", &output);
+    }
     else if(str_trim_cmp(item, "flying robot frame") || str_trim_cmp(item, "robot frame")) {
         recipe_flying_robot_frame_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "electrical engine unit")) {
         recipe_electrical_engine_unit_print(quantity, lvl, "", &output);
-    }
-    else if(str_trim_cmp(item, "batter")) {
-        recipe_battery_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "chemical science") || str_trim_cmp(item, "blue science")) {
         recipe_chemical_science_print(quantity, lvl, "", &output);
