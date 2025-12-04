@@ -25,3 +25,7 @@ void recipe_electrical_engine_unit_print(fraction quantity, unsigned int assembl
 void recipe_flying_robot_frame_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_construction_robot_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_logistic_robot_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_transport_belt_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_fast_transport_belt_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_splitter_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_fast_splitter_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);

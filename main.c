@@ -46,6 +46,24 @@ void main() {
        str_trim_cmp(item, "logistics robot") || str_trim_cmp(item, "logistics bot")) {
         recipe_logistic_robot_print(quantity, lvl, "", &output);
     }
+    else if(str_trim_cmp(item, "transport belt") || str_trim_cmp(item, "yellow belt")) {
+        recipe_transport_belt_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "underground") || str_trim_cmp(item, "yellow underground")) {
+        recipe_underground_belt_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "splitter")) {
+        recipe_splitter_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "fast splitter") || str_trim_cmp(item, "red splitter")) {
+        recipe_fast_splitter_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "fast transport belt") || str_trim_cmp(item, "red belt")) {
+        recipe_fast_transport_belt_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "fast underground") || str_trim_cmp(item, "red underground")) {
+        recipe_fast_underground_belt_print(quantity, lvl, "", &output);
+    }
     else if(str_trim_cmp(item, "flying robot frame") || str_trim_cmp(item, "robot frame")) {
         recipe_flying_robot_frame_print(quantity, lvl, "", &output);
     }
@@ -66,6 +84,12 @@ void main() {
     }
     else if(str_trim_cmp(item, "gear")) {
         recipe_gear_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "pipe")) {
+        recipe_pipe_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "copper wire") || str_trim_cmp(item, "wire")) {
+        recipe_copper_wire_print(quantity, lvl, "", &output);
     }
 
     printf("\n------------------------------\n");
