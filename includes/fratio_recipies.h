@@ -5,7 +5,7 @@ typedef struct fraction {
     unsigned int den;
 } fraction;
 
-#define BASE_MATERIAL_DICT_SIZE 6
+#define BASE_MATERIAL_DICT_SIZE 9
 
 typedef struct base_material_dict {
     char materials[BASE_MATERIAL_DICT_SIZE][13];
@@ -29,3 +29,5 @@ void recipe_transport_belt_print(fraction quantity, unsigned int assembler_level
 void recipe_fast_transport_belt_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_splitter_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_fast_splitter_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_electric_furnace_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_electric_mining_drill_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
