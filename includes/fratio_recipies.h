@@ -31,3 +31,9 @@ void recipe_splitter_print(fraction quantity, unsigned int assembler_level, char
 void recipe_fast_splitter_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_electric_furnace_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
 void recipe_electric_mining_drill_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_solar_panel_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_iron_stick_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_medium_electric_pole_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_big_electric_pole_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_substation_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);
+void recipe_module_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict);

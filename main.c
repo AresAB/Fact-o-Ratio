@@ -43,7 +43,7 @@ void main() {
         recipe_construction_robot_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "logistic robot") || str_trim_cmp(item, "logistic bot") ||
-       str_trim_cmp(item, "logistics robot") || str_trim_cmp(item, "logistics bot")) {
+            str_trim_cmp(item, "logistics robot") || str_trim_cmp(item, "logistics bot")) {
         recipe_logistic_robot_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "electric mining drill") || str_trim_cmp(item, "mining drill")) {
@@ -51,6 +51,22 @@ void main() {
     }
     else if(str_trim_cmp(item, "electric furnace")) {
         recipe_electric_furnace_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "solar")) {
+        recipe_solar_panel_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "medium")) {
+        recipe_medium_electric_pole_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "big")) {
+        recipe_big_electric_pole_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "substation")) {
+        recipe_substation_print(quantity, lvl, "", &output);
+    }
+    else if(str_trim_cmp(item, "module") || str_trim_cmp(item, "productivity module") ||
+            str_trim_cmp(item, "efficiency module") || str_trim_cmp(item, "speed module")) {
+        recipe_module_print(quantity, lvl, "", &output);
     }
     else if(str_trim_cmp(item, "transport belt") || str_trim_cmp(item, "yellow belt")) {
         recipe_transport_belt_print(quantity, lvl, "", &output);

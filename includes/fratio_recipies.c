@@ -416,3 +416,99 @@ void recipe_electric_mining_drill_print(fraction quantity, unsigned int assemble
     printf(buffer); printf("|\n");
     printf(buffer); printf("|- "); recipe_electronic_circuit_print(item_quantity, assembler_level, next_buffer, dict);
 }
+
+void recipe_solar_panel_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 10, 1), assembler_level, buffer, "solar panels");
+
+    fraction item_quantity = fract_mult_2ui(quantity, 5, 1);
+    printf(buffer); printf("|- %u/%u copper plates\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "copper plates", item_quantity);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- %u/%u steel\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "steel", item_quantity);
+    item_quantity = fract_mult_2ui(quantity, 15, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_electronic_circuit_print(item_quantity, assembler_level, next_buffer, dict);
+}
+
+void recipe_iron_stick_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    fract_mult_2ui(quantity, 1, 2);
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 1, 2), assembler_level, buffer, "iron sticks");
+
+    printf(buffer); printf("|- %u/%u iron plates\n", quantity.num, quantity.den);
+    base_material_dict_increment(dict, "iron plates", quantity);
+}
+
+void recipe_medium_electric_pole_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 1, 2), assembler_level, buffer, "medium electric poles");
+
+    fraction item_quantity = fract_mult_2ui(quantity, 2, 1);
+    printf(buffer); printf("|- %u/%u steel\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "steel", item_quantity);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, assembler_level, next_buffer, dict);
+    item_quantity = fract_mult_2ui(quantity, 4, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_iron_stick_print(item_quantity, assembler_level, next_buffer, dict);
+}
+
+void recipe_big_electric_pole_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 1, 2), assembler_level, buffer, "big electric poles");
+
+    fraction item_quantity = fract_mult_2ui(quantity, 5, 1);
+    printf(buffer); printf("|- %u/%u steel\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "steel", item_quantity);
+    item_quantity = fract_mult_2ui(quantity, 4, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, assembler_level, next_buffer, dict);
+    item_quantity = fract_mult_2ui(quantity, 8, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_iron_stick_print(item_quantity, assembler_level, next_buffer, dict);
+}
+
+void recipe_substation_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 1, 2), assembler_level, buffer, "substations");
+
+    fraction item_quantity = fract_mult_2ui(quantity, 10, 1);
+    printf(buffer); printf("|- %u/%u steel\n", item_quantity.num, item_quantity.den);
+    base_material_dict_increment(dict, "steel", item_quantity);
+    item_quantity = fract_mult_2ui(quantity, 6, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_copper_wire_print(item_quantity, assembler_level, next_buffer, dict);
+    item_quantity = fract_mult_2ui(quantity, 5, 1);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_advanced_circuit_print(item_quantity, assembler_level, next_buffer, dict);
+}
+
+void recipe_module_print(fraction quantity, unsigned int assembler_level, char *buffer, base_material_dict *dict) {
+    char *next_buffer = (char *) malloc(strlen(buffer) + 3);
+    strcpy(next_buffer, buffer);
+    strcat(next_buffer, "|  ");
+   
+    recipe_assembly_print(fract_mult_2ui(quantity, 15, 1), assembler_level, buffer, "modules");
+
+    fraction item_quantity = fract_mult_2ui(quantity, 5, 1);
+    printf(buffer); printf("|- "); recipe_electronic_circuit_print(item_quantity, assembler_level, next_buffer, dict);
+    printf(buffer); printf("|\n");
+    printf(buffer); printf("|- "); recipe_advanced_circuit_print(item_quantity, assembler_level, next_buffer, dict);
+}
